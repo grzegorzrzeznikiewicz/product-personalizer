@@ -2,7 +2,7 @@ import styles from './Product.module.scss';
 import clsx from 'clsx';
 import Button from '../Button/Button';
 import PropTypes from 'prop-types';
-import {useState} from "react";
+import {useState, useMemo} from "react";
 
 const Product = props => {
   const [currentColor, setCurrentColor] = useState(props.colors[0]);
@@ -11,10 +11,10 @@ const Product = props => {
     return styles['color' + color[0].toUpperCase() + color.substr(1).toLowerCase()];
   }
 
-  const getPrice = () => {
-    const currentSizeData  = props.sizes.find(size => size.name === currentSize);
+  const getPrice = useMemo(() => {
+    const currentSizeData = props.sizes.find(size => size.name === currentSize);
     return props.basePrice + currentSizeData.additionalPrice;
-  }
+  }, [currentSize, props.basePrice, props.sizes]);
 
   return (
     <article className={styles.product}>
